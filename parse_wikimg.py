@@ -19,6 +19,7 @@ my_time = '%s-%s-%s' % (my_hour, my_minute, my_second)
 
 work_dir_in = 'files_in'
 work_dir_out = 'files_out'
+list_html_markup = []  # список html разметки
 
 
 # создаем рабочие дирректории
@@ -31,14 +32,15 @@ def create_work_dir():
         print('Рабочий каталог "%s" создан' % work_dir_out)
 
 
-# считываем исходные файлы
+# считываем исходные файлы и добавляем html разметку в список
 def read_work_files(work_dir_in):
     list_work_files = os.listdir(work_dir_in)
     for work_file in list_work_files:
         file_name = os.path.join(work_dir_in, work_file)
         f_in = open(file_name, 'r', encoding='utf-8')
-        print(f_in.read())
+        list_html_markup.append(f_in.read())
         f_in.close()
+    # print(len(list_html_markup))
 
 
 def main():
