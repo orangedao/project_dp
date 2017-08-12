@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import re
 from datetime import datetime, date, time
 
 now = datetime.now()
@@ -43,9 +44,19 @@ def read_work_files(work_dir_in):
     # print(len(list_html_markup))
 
 
+# ф-я для поиска картинок по заданному шаблону
+def find_all_img():
+    pattern = r'https://uploads[0-9]\.wikiart\.org/images/[a-zA-Z0-9_\-\/]+\.jpg'
+    for html_markup in list_html_markup:
+        # создаем список картинок
+        list_img_link = (re.findall(pattern, str(html_markup)))
+        print(list_img_link)
+
+
 def main():
     create_work_dir()
     read_work_files(work_dir_in)
+    find_all_img()
     # print(list_work_files)
 
 
