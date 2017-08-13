@@ -51,18 +51,20 @@ def find_all_img():
     for html_markup in list_html_markup:
         # создаем список картинок
         list_img_link = (re.findall(pattern, str(html_markup)))
-        # print(list_img_link[:3])
+        # print(list_img_link[:5])
         count = 0
 
         for url in list_img_link:
             count += 1
-            print('downloading file # {count:03}'.format(count=count))
+            p = os.path.dirname(url)
+            name_part1 = p.split(sep='/')[-1]
+            name_part2 = os.path.basename(url)
+            file_name = name_part1 + '-' + name_part2
+
+            print('downloading file # {count:03}-%s'.format(count=count) % name_part2)
             r = requests.get(url)
-            with open('files_out/{count:03}.jpg'.format(count=count), 'wb') as img:
+            with open('files_out/%s.jpg' % file_name, 'wb') as img:
                 img.write(r.content)
-
-
-
 
 
 def main():
