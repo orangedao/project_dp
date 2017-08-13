@@ -3,6 +3,7 @@
 
 import os
 import re
+import requests
 from datetime import datetime, date, time
 
 now = datetime.now()
@@ -50,13 +51,27 @@ def find_all_img():
     for html_markup in list_html_markup:
         # создаем список картинок
         list_img_link = (re.findall(pattern, str(html_markup)))
-        print(list_img_link)
+        # print(list_img_link[:3])
+        count = 0
+
+        for url in list_img_link:
+            count += 1
+            print('downloading file # {count:03}'.format(count=count))
+            r = requests.get(url)
+            with open('files_out/{count:03}.jpg'.format(count=count), 'wb') as img:
+                img.write(r.content)
+
+
+
 
 
 def main():
     create_work_dir()
     read_work_files(work_dir_in)
     find_all_img()
+    # save_img()
+    # get_images()
+
     # print(list_work_files)
 
 
