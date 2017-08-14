@@ -60,7 +60,7 @@ def find_all_img():
             name_part1 = p.split(sep='/')[-1]
             name_part2 = os.path.basename(url)
             file_name = name_part1 + '-' + name_part2
-
+            # downloading files
             print('downloading file # {count:03}-%s'.format(count=count) % name_part2)
             r = requests.get(url)
             with open('files_out/%s.jpg' % file_name, 'wb') as img:
