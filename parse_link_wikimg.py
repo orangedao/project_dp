@@ -31,15 +31,18 @@ def read_work_files(work_dir_in):
         list_url_img = (f_in.readlines())
         f_in.close()
         # print(list_url_img)
-    return list_url_img
+        return list_url_img
 
 
 # ф-я для поиска картинок по заданному шаблону
 def save_img(read_work_files):
-    for url in read_work_files:
-        url_img = url.split(sep='!PinterestLarge.jpg')[0]
-        # list_url_img = []
-        list_url_img.append(url_img)
+    try:
+        for url in read_work_files:
+            url_img = url.split(sep='!PinterestLarge.jpg')[0]
+            # list_url_img = []
+            list_url_img.append(url_img)
+    except TypeError:
+        print('Ошибка типа данных. Проверьте входные данные!')
 
     count = 0
     for url in list_url_img:
@@ -52,14 +55,20 @@ def save_img(read_work_files):
         file_name = os.path.join(work_dir_out, work_file_out)
         # downloading files
         print('downloading file # {count:03}-%s'.format(count=count) % name_part2)
-        r = requests.get(url)
+        # s = requests.Session()
+        cert_name = 'wikiartorg.crt'
+        cert = 'cert/%s' % cert_name
+        # s.verify = 'cert/%s' % cert_name
+        # verify = s.verify
+        r = requests.get(url, cert=cert)
+        # r = requests.get(url)
         with open(file_name, 'wb') as img:
             img.write(r.content)
 
 
 def main():
-    if not create_work_dir():
-        save_img(read_work_files(work_dir_in))
+    create_work_dir()
+    save_img(read_work_files(work_dir_in))
 
 
 if __name__ == '__main__':
