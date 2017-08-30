@@ -13,19 +13,16 @@ import requests
 folder_out = 'images'  # переменная каталога с картинками
 folder_in = 'files_in'  # переменная каталога с входящими данными
 file_data = 'url_img.txt'  # переменная для рабочего файла с урлами
-path_file_data = os.path.join(folder_in, file_data)
+path_file_in = os.path.join(folder_in, file_data)
 msg_url = 'Данные отсутствуют.\
         \nСохраните список урлов в файле <{}>.\
-        \nКаждый урл должен находиться на новой строке.'.format(path_file_data)
+        \nКаждый урл должен находиться на новой строке.'.format(path_file_in)
 
 
 # функция чтения файлов из каталога и получения списка ссылок
-def read_file(list_work_files, folder_in):
-    # list_work_files = os.listdir(folder_in)
-    for work_file in list_work_files:
-        file_name = folder_in + '/' + work_file
-        with open(file_name, 'r') as f_in:
-            urls = f_in.readlines()
+def read_file(path_file_in):
+    with open(path_file_in, 'r') as f_in:
+        urls = f_in.readlines()
     if not len(urls):
         print(msg_url)
     return urls
@@ -60,24 +57,21 @@ def save_image(name, file_object):
             f.write(chunk)
 
 
-# ф-я создания входного каталога и файла для сохранения урлов
-def create_work_path(path_file_data, folder_in):
+# ф-я создания входного каталога и пустого файла для сохранения урлов
+def create_path_in(path_file_in, folder_in):
     if not os.path.exists(folder_in):
         os.mkdir(folder_in)
         print('Каталог <{}> создан.'.format(folder_in))
-    if not os.path.exists(path_file_data):
-        with open(path_file_data, 'w') as f:
+    if not os.path.exists(path_file_in):
+        with open(path_file_in, 'w') as f:
             f.write('')
-        # print(msg_url)
 
 
 def main():
-    create_work_path(path_file_data, folder_in)
-    list_work_files = os.listdir(folder_in)
-    urls = read_file(list_work_files, folder_in)
+    create_path_in(path_file_in, folder_in)
+    urls = read_file(path_file_in)
     for url in urls:
         save_image(get_name(url), get_file(get_large_file(url)))
-    # read_file(folder_in)
 
 
 if __name__ == '__main__':
