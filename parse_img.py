@@ -35,8 +35,12 @@ def get_file(url):
 
 # получения имени большой картинки
 def get_name(url):
-    name = url.split('/')[-1].split('!')[-2]
-    path = os.path.join(folder_out, name)
+    name = url.split('/')[-1].split('!')[0]
+    name_artist = url.split('/')[-2]
+    artist_dir = os.path.join(folder_out, name_artist)
+    if not os.path.exists(artist_dir):
+        os.mkdir(artist_dir)
+    path = os.path.join(artist_dir, name)
     return path
 
 
@@ -67,7 +71,7 @@ def make_all(url):
 def main():
     create_work_dirs(path_file_in, folder_in, folder_out)
     urls = read_file(path_file_in)
-    number_proc = 5  # кол-во процессов
+    number_proc = 10  # кол-во процессов
     with Pool(number_proc) as p:
         p.map(make_all, urls)
     print('DONE!')
