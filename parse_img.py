@@ -92,10 +92,9 @@ def create_work_dirs(path_file_in, folder_in, folder_out):
 # вспомогательная ф-я для запуска в  многопроцесорном режиме
 # параметр url_small_img и переменная url_small_img - урл одной маленькой картинки
 def make_all(url_small_img):
-    author_dir = get_name_author(url_small_img)
-    name_big_img = get_name_big_img(url_small_img)
-    save_image(get_full_path_big_img(folder_out, author_dir, name_big_img),
-                                    get_file(get_large_file(url_small_img)))
+    # author_dir = get_name_author(url_small_img)
+    # name_big_img = get_name_big_img(url_small_img)
+    save_image(get_name_big_img(url_small_img), get_file(get_large_file(url_small_img)))
 
 
 def main():
