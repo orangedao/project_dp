@@ -46,27 +46,22 @@ def get_file(url_big_img):
 # получение имени большой картинки
 def get_name_big_img(url_small_img):
     name_big_img = url_small_img.split('/')[-1].split('!')[0]
-    # name_artist = url.split('/')[-2]
-    # artist_dir = os.path.join(folder_out, name_artist)
-    # if not os.path.exists(artist_dir):
-    #     os.mkdir(artist_dir)
-    # path_big_img = os.path.join(folder_out, name_big_img)
     return name_big_img  # имя большой картинки
 
 
 # получение имени автора(имя подкаталога)
 def get_name_author(url_small_img):
     name_author = url_small_img.split('/')[-2]
-    author_dir = os.path.join(folder_out, name_author)
-    if not os.path.exists(author_dir):
-        os.mkdir(author_dir)
+    # author_dir = os.path.join(folder_out, name_author)
+    author_dir = name_author
+    if not os.path.exists(os.path.join(folder_out, name_author)):
+        os.mkdir(os.path.join(folder_out, name_author))
     return author_dir
 
 
 # получение полного пути до большой картинки
 def get_full_path_big_img(folder_out, author_dir, name_big_img):
     full_path_big_img = os.path.join(folder_out, author_dir, name_big_img)
-    # print('путь до картинки' + full_path_big_img)
     return full_path_big_img
 
 
@@ -92,15 +87,16 @@ def create_work_dirs(path_file_in, folder_in, folder_out):
 # вспомогательная ф-я для запуска в  многопроцесорном режиме
 # параметр url_small_img и переменная url_small_img - урл одной маленькой картинки
 def make_all(url_small_img):
-    # author_dir = get_name_author(url_small_img)
-    # name_big_img = get_name_big_img(url_small_img)
-    save_image(get_name_big_img(url_small_img), get_file(get_large_file(url_small_img)))
+    author_dir = get_name_author(url_small_img)
+    name_big_img = get_name_big_img(url_small_img)
+    full_path_big_img = get_full_path_big_img(folder_out, author_dir, name_big_img)
+    save_image(full_path_big_img, get_file(get_large_file(url_small_img)))
 
 
 def main():
     create_work_dirs(path_file_in, folder_in, folder_out)
     urls_small_img = read_file(path_file_in)  # переменная для списка урлов с маленькими картинками
-    number_proc = 10  # кол-во процессов
+    number_proc = 8  # кол-во процессов
     with Pool(number_proc) as p:
         p.map(make_all, urls_small_img)
     print('DONE!')
